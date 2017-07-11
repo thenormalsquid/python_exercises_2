@@ -106,8 +106,6 @@ class Ladder:
         return self.word_in_dict(word1) and self.word_in_dict(word2)
 
     def validate(self, word1, word2):
-        if not self.both_words_in_dict(word1, word2):
-            raise ValueError("Neither words were found in the dictionary!")
 
         if not self.word_in_dict(word1):
             raise ValueError("Word1 not in dictionary.")
@@ -128,42 +126,43 @@ class Ladder:
         permutation of words from the word at the top of the first stack in the queue. 
         Returns the shortest path if the path is found or -1.
         """
+        lower1 = word1.lower()
+        lower2 = word2.lower()
         self.validate(
-            word1, word2)  # check that these words are actually in dict
-        if self.both_words_in_dict(word1, word2):
-            # create a queue of word ladder stack
-            stack = Stack([word1])
-            queue = deque([stack])
-            seen = set([word1])
-            while len(queue) > 0:
-                stack = queue.popleft()
-                # examine neighbors from the current word at the top of the stack
-                curr_word = stack.pop()
-                for i, c in enumerate(curr_word):
-                    for s in string.printable:
-                        neighbor = curr_word[0:i] + s + \
-                            curr_word[i + 1::]
-                        if self.word_in_dict(neighbor) and neighbor not in seen:
-                            # if the neighbor not seen and neighbor is word2
-                            if neighbor == word2:
-                                print("ladder from {0} to {1} is: ".format(
-                                    word2, word1))
-                                # account for the current popped word and first word, hence 2
-                                l = len(stack) + 2
-                                print("{0}, {1}".format(
-                                    word2, curr_word), end="")
-                                while not stack.is_empty():
-                                    print(
-                                        ", {0}".format(stack.pop()), end="")
-                                print("\nlength: ", l)
-                                return l
-                            else:
-                                copy = Stack(stack.copy())
-                                # add this neighbor to the stack's copy
-                                copy.push(neighbor)
-                                seen.add(neighbor)
-                                queue.appendleft(copy)
-            return -1
+            lower1, lower2)  # check that these words are actually in dict
+        # create a queue of word ladder stack
+        stack = Stack([lower1])
+        queue = deque([stack])
+        seen = set([lower1])
+        while len(queue) > 0:
+            stack = queue.popleft()
+            # examine neighbors from the current word at the top of the stack
+            curr_word = stack.pop()
+            for i, c in enumerate(curr_word):
+                for s in string.ascii_lowercase:
+                    neighbor = curr_word[0:i] + s + \
+                        curr_word[i + 1::]
+                    if self.word_in_dict(neighbor) and neighbor not in seen:
+                        # if the neighbor not seen and neighbor is word2
+                        if neighbor == lower2:
+                            print("ladder from {0} to {1} is: ".format(
+                                word2, word1))
+                            # account for the current popped word and first word, hence 2
+                            l = len(stack) + 2
+                            print("{0}, {1}".format(
+                                lower2, curr_word), end="")
+                            while not stack.is_empty():
+                                print(
+                                    ", {0}".format(stack.pop()), end="")
+                            print("\nlength: ", l)
+                            return l
+                        else:
+                            copy = Stack(stack.copy())
+                            # add this neighbor to the stack's copy
+                            copy.push(neighbor)
+                            seen.add(neighbor)
+                            queue.append(copy)
+        return -1
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ A collection of exercises to do on my free time. The ultimate goal is to practic
 A word 'ladder' is a connection from one word to another formed by changing one letter at a time
 with the constraint that at each step the sequence of letters still forms a valid word. Find the minimum
 length 'ladder' between two words.
+https://en.wikipedia.org/wiki/Word_ladder
 
 Note: I know one can use the Levenshtein distance or hamming distance to find this result but the goal is to practice python.
 

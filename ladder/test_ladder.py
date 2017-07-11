@@ -64,11 +64,14 @@ class TestLadder(unittest.TestCase):
         self.assertEqual(self.ladder.find_ladder('code', 'data'), 5)
         self.assertRaisesRegex(
             ValueError, "Both words must be equal.", self.ladder.find_ladder, 'ghost', 'boo')
-        self.assertRaisesRegex(ValueError, "Neither words were found in the dictionary!", self.ladder.find_ladder,
-                               '12345', 'eeeef')
+        self.assertRaises(ValueError, self.ladder.find_ladder,
+                          '12345', 'eeeef')
         self.assertEqual(self.ladder.find_ladder('dog', 'cat'), 4)
         self.assertRaisesRegex(
             ValueError, "Words must be different.", self.ladder.find_ladder, 'dog', 'dog')
+
+        biglad = ladder.Ladder(filename="../res/dictionary.txt")
+        self.assertEqual(biglad.find_ladder('play', 'Work'), 7)
 
 
 if __name__ == '__main__':
