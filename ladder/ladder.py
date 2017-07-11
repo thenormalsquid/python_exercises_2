@@ -10,7 +10,6 @@
     find_distance(word1, word2) can be exported to be use in other modules
 """
 import argparse
-import gc
 import math
 from collections import deque
 
@@ -41,8 +40,6 @@ class Stack:
             copy[i] = self.__array[i]
         self.__array = copy
         self.__size = capacity
-        # free up previous references to array
-        gc.collect()
 
     def push(self, value):
         self.__last_index += 1
