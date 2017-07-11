@@ -10,6 +10,10 @@ https://en.wikipedia.org/wiki/Word_ladder
 
 Note: I know one can use the Levenshtein distance or hamming distance to find this result but the goal is to practice python.
 
+### Example usage:
+![laddergram usage 1](https://i.imgur.com/q96T27S.png)
+![laddergram usage 2](https://i.imgur.com/P2FfDmM.png)
+
 ## Part 2: Generate random sentences
 Build a n-gram from a provided input text/corpus and generate markov chain sentences with the n-gram and a 
 context-free-grammer ruleset.

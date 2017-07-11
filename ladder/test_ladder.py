@@ -72,6 +72,7 @@ class TestLadder(unittest.TestCase):
 
         biglad = ladder.Ladder(filename="../res/dictionary.txt")
         self.assertEqual(biglad.find_ladder('play', 'Work'), 7)
+        self.assertEqual(biglad.find_ladder('angel', 'devil'), 9)
 
 
 if __name__ == '__main__':
