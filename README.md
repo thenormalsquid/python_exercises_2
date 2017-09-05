@@ -16,6 +16,9 @@ Note: I know one can use the Levenshtein distance or hamming distance to find th
 
 ## Part 2: Generate random sentences
 Build a n-gram from a provided input text/corpus and generate markov chain sentences with the n-gram and a 
-context-free-grammer ruleset.
-
+context-free-grammer rulesets
  
+A python-based twitter bot that tweets combined quotes from Donald Trump and Martin Luther King Jr. 
+
+### Modules
+ - markov -> generates the data structures and interfaces needed to  

@@ -134,7 +134,7 @@ class Ladder:
         stack = Stack([lower1])
         queue = deque([stack])
         seen = set([lower1])
-        while len(queue) > 0:
+        while len(queue):
             stack = queue.popleft()
             # examine neighbors from the current word at the top of the stack
             curr_word = stack.pop()
