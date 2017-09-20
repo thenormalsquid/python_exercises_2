@@ -5,47 +5,53 @@ import redis
 
 BEGIN = '_BEGIN_'
 END = '_END_'
-
-
-def tokenize(quote):
-    # split quote into a list of runs (sentences)
-    return
-
+N = 3 # start with a 3 gram. This needs to be > 1
 
 def store_ngram(storage, prefix, suffix, debug=False):
     # takes a tuple start and the next state,
-    # stores start and next state as child of that start along with frequency of next state
+    # stores stat and next state as child of that start along with frequency of next state
     # NOTE: I really don't like mutating the 'storage' state like this. might want to refactor to a class
     if not(prefix or suffix):
         raise Exception('Start or next_state are required!')
-
-    if not storage and type(storage) is not dict:
-        raise Exception('Storage required!')
 
     if debug and type(storage) is dict:
         # if we're in debug mode, storage is a passed dict
         if prefix not in storage:
             storage[prefix] = {}
+            storage[prefix]['total_suffixes'] = 0
 
         if suffix not in storage[prefix]:
             storage[prefix][suffix] = 0
 
         storage[prefix][suffix] += 1
+        storage[prefix]['total_suffixes'] += 1
         return storage
 
 
-def n_gram(run, n, debug=False):
+def n_gram(run, debug=False):
     # take a string quote and produce an n-gram
     assert type(run) is str, 'quote is not a string %s' % run
-    assert type(n) is int, 'n is not an integer %d' % n
+    assert run is not '', 'Cannot process empty quote'
     items = run.split(' ')
     storage = {} if debug else redis.StrictRedis(
         host='localhost', port=6379, db=0)
 
-    for i in range(len(items) + 1):
-        start = tuple(items[i:i + (n - 1)])
-        print(start)
-        # store_ngram(storage, start, next_state, debug)
+    n = N
+    while n > len(items):
+        # reduce n if our passed tokens is less than n
+        n -= 1
+    
+    items.insert(0, BEGIN) # add our begin and stop to our quote source
+    # TODO: add this end to the end of every sentence inside the quote
+    items.append(END)
+
+    for i in range(len(items) - 1):
+        right_idx = i + n - 1
+        prefix = tuple(items[i:right_idx])
+        suffix = items[right_idx] 
+        store_ngram(storage, prefix, suffix, True)
+        if items[right_idx] == END:
+            break
 
     if debug:
         return storage
