@@ -33,20 +33,17 @@ def n_gram(run, debug=False):
     assert type(run) is str, 'quote is not a string %s' % run
     assert run is not '', 'Cannot process empty quote'
     items = run.split(' ')
+    assert len(items) > N, 'Cannot process strings less than size N'
+
     storage = {} if debug else redis.StrictRedis(
         host='localhost', port=6379, db=0)
 
-    n = N
-    while n > len(items):
-        # reduce n if our passed tokens is less than n
-        n -= 1
-    
     items.insert(0, BEGIN) # add our begin and stop to our quote source
     # TODO: add this end to the end of every sentence inside the quote
     items.append(END)
 
     for i in range(len(items) - 1):
-        right_idx = i + n - 1
+        right_idx = i + N - 1
         prefix = tuple(items[i:right_idx])
         suffix = items[right_idx] 
         store_ngram(storage, prefix, suffix, True)
@@ -55,3 +52,11 @@ def n_gram(run, debug=False):
 
     if debug:
         return storage
+
+# TODO; integrate markov generator with bot
+
+def text_generate():
+    pass
+
+def random_selection():
+    pass
